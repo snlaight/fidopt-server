@@ -6,7 +6,7 @@ const app = express();
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
   .then((x) => {
@@ -28,3 +28,13 @@ app.use((error, req, res, next)=>{
     });
 });
 
+const veterinarios = require('./routes/veterinarios');
+app.use('/',veterinarios)
+const perros = require('./routes/perros')
+app.use('/',perros);
+const usuarios = require('./routes/usuarios');
+app.use('/',usuarios);
+
+app.listen(process.env.PUERTO,()=>{
+    console.log(`Escuchando en http://localhost:${process.env.PUERTO}`);
+});
