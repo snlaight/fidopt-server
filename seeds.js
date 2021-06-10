@@ -20,56 +20,79 @@ mongoose
     console.error("Error al conectar con Mongo", err);
   });
 
-  let perros = [
-      {
-          nombre: "Hercules",
-          edad: 5 ,
-          raza: "Pastor Aleman",
-          vacuna_antirabica: "Si",
-          castrado: "No",
-          chip: "Si",
-      },
-      {
-        nombre: "Kratos",
-        edad: 9 ,
-        raza: "Rottweiler",
-        vacuna_antirabica: "Si",
-        castrado: "Si",
-        chip: "No",
-    },
-    {
-        nombre: "Konan",
-        edad: 3 ,
-        raza: "Golden Retriever",
-        vacuna_antirabica: "Si",
-        castrado: "Si",
-        chip: "Si",
-    },
-    {
-        nombre: "Freddy Mercury",
-        edad: 1 ,
-        raza: "Chihuaha",
-        vacuna_antirabica: "No",
-        castrado: "No",
-        chip: "No",
-    },
-  ];
-  Perro.deleteMany()
-  .then(()=>{
-      return perro.create(perros);
+let perros = [
+  {
+    nombre: "Hercules",
+    edad: 5,
+    raza: "Pastor Aleman",
+    vacuna_antirabica: "Si",
+    castrado: "No",
+    chip: "Si",
+    veterinaria: "Save the Dogs",
+  },
+  {
+    nombre: "Kratos",
+    edad: 9,
+    raza: "Rottweiler",
+    vacuna_antirabica: "Si",
+    castrado: "Si",
+    chip: "No",
+    veterinaria: "CanCollect",
+  },
+  {
+    nombre: "Floyd Mayweather",
+    edad: 3,
+    raza: "Golden Retriever",
+    vacuna_antirabica: "Si",
+    castrado: "Si",
+    chip: "Si",
+    veterinaria: "Veterinaria del Barrio",
+  },
+  {
+    nombre: "Freddy Mercury",
+    edad: 1,
+    raza: "Chihuaha",
+    vacuna_antirabica: "No",
+    castrado: "No",
+    chip: "No",
+    veterinaria: "CanCollect",
+  },
+];
+Perro.deleteMany()
+  .then(() => {
+    return perro.create(perros);
   })
-  .then((perrosCreados)=>{
-console.log(`${perrosCreados.length} perros creados con los siguientes nombres:`
-);
-console.log(perrosCreados.map((perro)=> perro.nombre));
+  .then((perrosCreados) => {
+    console.log(
+      `${perrosCreados.length} perros creados con los siguientes nombres:`
+    );
+    console.log(perrosCreados.map((perro) => perro.nombre));
   })
-  .then(()=>{
-      mongoose.disconnect();
+  .then(() => {
+    mongoose.disconnect();
   })
-  .catch((err)=>{
-      mongoose.disconnect();
-      throw err ;
+  .catch((err) => {
+    mongoose.disconnect();
+    throw err;
   });
 
-  
-
+let veterinarios = [
+  {
+    nombre: "Andres Ayala",
+    veterinaria: "Save the Dogs",
+    perros: "Hercules",
+    rating: 3.5,
+  },
+  {
+    nombre: "Santiago Ponzinnibio",
+    veterinaria: "CanConnect",
+    perros: "Kratos, Freddy Mercury",
+    rating: 5,
+  },
+  {
+    nombre: "Lautaro Torres",
+    veterinaria: "Veterinaria del Barrio",
+    perros: "Floyd Mayweather",
+    rating: 2,
+  },
+];
