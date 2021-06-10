@@ -60,7 +60,7 @@ let perros = [
 ];
 Perro.deleteMany()
   .then(() => {
-    return perro.create(perros);
+    return Perro.create(perros);
   })
   .then((perrosCreados) => {
     console.log(
@@ -96,3 +96,19 @@ let veterinarios = [
     rating: 2,
   },
 ];
+
+Veterinario.deleteMany()
+.then(()=>{
+  return Veterinario.create(veterinarios)
+})
+.then((veterinariosCreados)=>{
+  console.log(`${veterinariosCreados.length} veterinarios creados con los siguientes nombres:`)
+  console.log(veterinariosCreados.map((veterinarios)=>veterinarios.nombre))
+})
+.then(()=>{
+  mongoose.disconnect();
+})
+.catch((err)=>{
+  mongoose.disconnect();
+  throw err
+});
