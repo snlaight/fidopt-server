@@ -5,8 +5,9 @@ const esquemaUsuario = new Schema ({
     nombre: {type:String},
     edad: {type: Number},
     email: {type: String},
+    password:{type: String},
     ciudad: {type: String},
-    razas_favoritas: {type: Array},
+    razasFavoritas: {type: Array},
     interesEnAdoptar: {type:Boolean},
 },{
     timestamps:{
