@@ -32,8 +32,8 @@ const veterinarios = require('./routes/veterinarios');
 app.use('/',veterinarios)
 const perros = require('./routes/perros')
 app.use('/',perros);
-// const usuarios = require('./routes/usuarios');
-// app.use('/',usuarios);
+ const usuarios = require('./routes/usuarios');
+ app.use('/',usuarios);
 
 app.listen(process.env.PUERTO,()=>{
     console.log(`Escuchando en http://localhost:${process.env.PUERTO}`);

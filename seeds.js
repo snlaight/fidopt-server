@@ -1,11 +1,13 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
+// const bcrypt = require("bcrypt");
 
 const Perro = require("./models/perro");
 const Veterinario = require("./models/veterinario");
-// const Usuario = require("./models/usuario");
+const Usuario = require("./models/usuario");
 
+// const salt = bcrypt.genSaltSync(10);
 mongoose
   .connect(
     `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
@@ -84,6 +86,46 @@ let perros = [
   },
 ];
 
+let usuarios = [
+  {
+    nombre: "Eduardo Dev",
+    edad: 29,
+    email: "eduardo@dev.com",
+    password: "123456",
+    ciudad: "Zaragoza",
+    razasFavoritas: ["Pastor Aleman", "Chihuahua", "Rottweiler"],
+    interesEnAdoptar: true,
+  },
+  {
+    nombre: "Santiago Laight",
+    edad: 32,
+    email: "snlaight10@gmail.com ",
+    password: "123456",
+    ciudad: "Barcelona",
+    razasFavoritas: ["Golden Retriever", "Mezcla", "Pastor Aleman"],
+    interesEnAdoptar: true,
+  },
+  {
+    nombre: "Roberto Baggio",
+    edad: 45,
+  email: "robert@baggio.com",
+    password: "123456",
+    ciudad: "Milan",
+    razasFavoritas: ["Ninguna"],
+    interesEnAdoptar: false,
+  },
+  {
+    nombre: "Helena Golab",
+    edad: 32,
+    email: "email@falso.com",
+    password: "123456",
+    ciudad: "Varsovia",
+    razasFavoritas: ["Todas las razas"],
+    interesEnAdoptar: true,
+  },
+];
+
+
 Perro.deleteMany()
   .then(() => {
     return Perro.create(perros);
@@ -92,8 +134,20 @@ Perro.deleteMany()
     console.log(
       `${perrosCreados.length} perros creados con los siguientes nombres:`
     );
-    console.log(perrosCreados.map((perro) => perro.nombre));
-    Veterinario.deleteMany()
+    console.log(perrosCreados.map((perro) => perro.nombre))
+Usuario.deleteMany()
+  .then(() => {
+    console.log(Usuario)
+    return Usuario.create(usuarios);
+  })
+  .then((usuariosCreados) => {
+    console.log(
+      `${usuariosCreados.length} usuarios creados con los siguientes nombres:`
+    );
+console.log(usuariosCreados.map((usuario) => usuario.nombre)
+);
+  });
+Veterinario.deleteMany()
       .then(() => {
         return Veterinario.create(veterinarios);
       })
