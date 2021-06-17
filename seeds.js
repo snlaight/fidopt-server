@@ -1,13 +1,13 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
-// const bcrypt = require("bcrypt");
+ const bcrypt = require("bcrypt");
 
 const Perro = require("./models/perro");
 const Veterinario = require("./models/veterinario");
 const Usuario = require("./models/usuario");
 
-// const salt = bcrypt.genSaltSync(10);
+ const salt = bcrypt.genSaltSync(10);
 mongoose
   .connect(
     `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
@@ -124,6 +124,11 @@ let usuarios = [
     interesEnAdoptar: true,
   },
 ];
+
+usuarios.forEach((usuario)=>{
+  let hashPass = bcrypt.hashSync(usuario.password, salt);
+  usuario.password = hashPass;
+})
 
 
 Perro.deleteMany()
