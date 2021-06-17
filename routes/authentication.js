@@ -75,7 +75,7 @@ authRoutes.post("/login", async(req,res)=>{
     let pass = req.body.pass;
 
     let usuario= await Usuario.findOne({username: name}).then((usuarioEncontrado)=>{
-        return userEncontrado
+        return usuarioEncontrado
     });
 
     if(!user){
