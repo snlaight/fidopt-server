@@ -46,6 +46,7 @@ router.post("/nuevoVeterinario", async (req, res) => {
 
 router.put("/actualizarVeterinario/:id", (req, res) => {
   let nombreVeterinario = req.body.nombre;
+  let idVeterinario = req.params.id;
   let nombreVeterinaria = req.body.veterinaria;
   let nombrePerros = req.body.perros;
   let ratingVeterinario = req.body.rating;
@@ -56,7 +57,7 @@ router.put("/actualizarVeterinario/:id", (req, res) => {
     rating: ratingVeterinario,
   })
     .then((veterinarioActualizado) => {
-      res.redirect(`/veterinario/${veterinarioActualizado._id}`);
+      res.redirect(`/veterinario/${veterinarioActualizado.id}`);
     })
     .catch((error) => {
       console.log(error);

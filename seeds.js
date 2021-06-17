@@ -1,13 +1,13 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
- const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const Perro = require("./models/perro");
 const Veterinario = require("./models/veterinario");
 const Usuario = require("./models/usuario");
 
- const salt = bcrypt.genSaltSync(10);
+const salt = bcrypt.genSaltSync(10);
 mongoose
   .connect(
     `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
@@ -100,7 +100,7 @@ let usuarios = [
     nombre: "Santiago Laight",
     edad: 32,
     email: "snlaight10@gmail.com ",
-    password: "123456",
+    password: "holahola",
     ciudad: "Barcelona",
     razasFavoritas: ["Golden Retriever", "Mezcla", "Pastor Aleman"],
     interesEnAdoptar: true,
@@ -108,8 +108,8 @@ let usuarios = [
   {
     nombre: "Roberto Baggio",
     edad: 45,
-  email: "robert@baggio.com",
-    password: "123456",
+    email: "robert@baggio.com",
+    password: "54785632",
     ciudad: "Milan",
     razasFavoritas: ["Ninguna"],
     interesEnAdoptar: false,
@@ -118,18 +118,17 @@ let usuarios = [
     nombre: "Helena Golab",
     edad: 32,
     email: "email@falso.com",
-    password: "123456",
+    password: "49383r82",
     ciudad: "Varsovia",
     razasFavoritas: ["Todas las razas"],
     interesEnAdoptar: true,
   },
 ];
 
-usuarios.forEach((usuario)=>{
+usuarios.forEach((usuario) => {
   let hashPass = bcrypt.hashSync(usuario.password, salt);
   usuario.password = hashPass;
-})
-
+});
 
 Perro.deleteMany()
   .then(() => {
@@ -139,20 +138,19 @@ Perro.deleteMany()
     console.log(
       `${perrosCreados.length} perros creados con los siguientes nombres:`
     );
-    console.log(perrosCreados.map((perro) => perro.nombre))
-Usuario.deleteMany()
-  .then(() => {
-    console.log(Usuario)
-    return Usuario.create(usuarios);
-  })
-  .then((usuariosCreados) => {
-    console.log(
-      `${usuariosCreados.length} usuarios creados con los siguientes nombres:`
-    );
-console.log(usuariosCreados.map((usuario) => usuario.nombre)
-);
-  });
-Veterinario.deleteMany()
+    console.log(perrosCreados.map((perro) => perro.nombre));
+    Usuario.deleteMany()
+      .then(() => {
+        console.log(Usuario);
+        return Usuario.create(usuarios);
+      })
+      .then((usuariosCreados) => {
+        console.log(
+          `${usuariosCreados.length} usuarios creados con los siguientes nombres:`
+        );
+        console.log(usuariosCreados.map((usuario) => usuario.nombre));
+      });
+    Veterinario.deleteMany()
       .then(() => {
         return Veterinario.create(veterinarios);
       })
