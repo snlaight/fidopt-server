@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
+
 const app = express();
 
 mongoose
@@ -34,6 +35,9 @@ const perros = require('./routes/perros')
 app.use('/',perros);
  const usuarios = require('./routes/usuarios');
  app.use('/',usuarios);
+
+const authentication = require("./routes/authentication")
+app.use('/',authentication);
 
 app.listen(process.env.PUERTO,()=>{
     console.log(`Escuchando en http://localhost:${process.env.PUERTO}`);

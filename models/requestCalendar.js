@@ -8,7 +8,7 @@ const calendarRequest = new Schema ({
     name: [{type: esquemaUsuario.paths.nombre, ref:"Usuario"}],
     date: {type: Date},
     status: {type: Array},
-    motiveForVisit: {type: string, require:"Please state your motive for this visit."},
+    motiveForVisit: {type: string, required:true},
 },{
     timestamps:{
         createdAt:"created_at",

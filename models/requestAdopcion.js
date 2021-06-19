@@ -6,7 +6,7 @@ import esquemaUsuario from './usuario'
 const adoptionRequest = new Schema ({
     idUser: [{type: Schema.Types.ObjectId, ref: "Usuario"}],
     name: [{type: esquemaUsuario.paths.nombre, ref:"Usuario"}],
-    adoptionReason: {type:String, required:"Please insert a motive for this adoption."},
+    adoptionReason: {type:String, required:true, message:"This field is required."},
     status: {type:Array},
     ciudad: {type:String},
 },{

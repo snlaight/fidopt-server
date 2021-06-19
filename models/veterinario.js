@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const esquemaVeterinarios = new Schema({
     nombre: {type: String},
-    veterinaria: {type: String},
+    veterinaria: {type: String, required: true},
     rating: {type: Number},
     perros: [{type: Schema.Types.ObjectId, ref: "Perro"}]
 },{
