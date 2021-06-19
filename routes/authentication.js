@@ -98,7 +98,7 @@ authRoutes.post("/login", async (req, res) => {
 });
 
 authRoutes.get("/private", async (req, res) => {
-  const token = req.headers["x-access-token"];
+  const token = req.headers.token;
   if (!token) {
     res.send({
       auth: false,
@@ -109,9 +109,7 @@ authRoutes.get("/private", async (req, res) => {
 
   const decoded = jwt.verify(token, process.env.SECRET_WORD);
 
-  const usuario = await Usuario.findById(decoded.id, { password: 0 }).populate(
-    "perros"
-  );
+  const usuario = await Usuario.findById(decoded.id, {password:0}).populate("perrosFavoritos");
   if (!usuario) {
     res.send({ auth: false, message: "User does not exist" });
     return;

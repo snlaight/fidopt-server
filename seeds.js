@@ -99,10 +99,11 @@ let usuarios = [
   {
     nombre: "Santiago Laight",
     edad: 32,
-    email: "snlaight10@gmail.com ",
+    email: "snlaight10@gmail.com",
     password: "holahola",
     ciudad: "Barcelona",
     razasFavoritas: ["Golden Retriever", "Mezcla", "Pastor Aleman"],
+    perrosFavoritos:["60c5fbdc8c3b2720a2e13643"],
     interesEnAdoptar: true,
   },
   {

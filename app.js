@@ -39,6 +39,6 @@ app.use('/',perros);
 const authentication = require("./routes/authentication")
 app.use('/',authentication);
 
-app.listen(process.env.PUERTO,()=>{
-    console.log(`Escuchando en http://localhost:${process.env.PUERTO}`);
+app.listen(process.env.PORT,()=>{
+    console.log(`Escuchando en http://localhost:${process.env.PORT}`);
 });
