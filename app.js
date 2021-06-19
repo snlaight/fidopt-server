@@ -7,7 +7,7 @@ const app = express();
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.USUARIO_BD}:${process.env.PASSWORD_BD}@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
+    `mongodb+srv://Admin:yPBNxAEEMbT0Xyy3@cluster0.j5oo4.mongodb.net/primera-base-de-datos?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then((x) => {
