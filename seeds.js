@@ -126,6 +126,7 @@ let usuarios = [
   },
 ];
 
+
 usuarios.forEach((usuario) => {
   let hashPass = bcrypt.hashSync(usuario.password, salt);
   usuario.password = hashPass;
