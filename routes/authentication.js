@@ -17,8 +17,10 @@ const salt = bcrypt.genSaltSync(10);
 authRoutes.post("/signup", async (req, res) => {
   const usuario = req.body.usuario;
   const pass = req.body.pass;
-
-  if (!usuario || !pass) {
+  const rol = req.body.rol;
+const ciudad = req.body.ciudad;
+const email = req.body.email;
+  if (!usuario || !pass || !rol || !ciudad || !email) {
     res.send({
       auth: false,
       token: null,
@@ -35,7 +37,7 @@ authRoutes.post("/signup", async (req, res) => {
     });
     return;
   }
-  let foundUsuario = await Usuario.findOne({ username: usuario }).then(
+  let foundUsuario = await Usuario.findOne({ email: email}).then(
     (repeatedusuario) => {
       return repeatedusuario;
     }
@@ -44,7 +46,7 @@ authRoutes.post("/signup", async (req, res) => {
     res.send({
       auth: false,
       token: null,
-      message: "User name is already taken. Choose another one.",
+      message: "Email is already taken. Choose another one.",
     });
     return;
   }
@@ -53,6 +55,9 @@ authRoutes.post("/signup", async (req, res) => {
   let nuevoUsuario = await Usuario.create({
     nombre: usuario,
     password: hashPass,
+    rol: rol,
+    email: email, 
+    ciudad: ciudad,
   })
     .then((usuarioCreado) => {
       return usuarioCreado;
@@ -66,17 +71,17 @@ authRoutes.post("/signup", async (req, res) => {
       return;
     });
 
-  const newToken = jwt.sign({ id: nuevoUsuario._id }, process.env.SECRET_WORD, {
+  const newToken = jwt.sign({ id: nuevoUsuario._id, rol: nuevoUsuario.rol }, process.env.SECRET_WORD, {
     expiresIn: expirationTime,
   });
   res.send({ auth: true, token: newToken });
 });
 
 authRoutes.post("/login", async (req, res) => {
-  let name = req.body.nombre;
-  let pass = req.body.password;
+let email = req.body.email;
+let pass = req.body.password;
 
-  let usuario = await Usuario.findOne({ nombre: name }).then(
+  let usuario = await Usuario.findOne({ email: email }).then(
     (usuarioEncontrado) => {
       return usuarioEncontrado;
     }
@@ -91,7 +96,7 @@ authRoutes.post("/login", async (req, res) => {
     res.send({ auth: false, token: null, message: "Incorrect Password" });
     return;
   }
-  const newToken = jwt.sign({ id: usuario._id }, process.env.SECRET_WORD, {
+  const newToken = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.SECRET_WORD, {
     expiresIn: expirationTime,
   });
   res.send({ auth: true, token: newToken , message:"Login succesful!"});

@@ -5,6 +5,7 @@ const esquemaUsuario = new Schema ({
     nombre: {type:String, required:true},
     edad: {type: Number},
     email: {type: String, required:true},
+    rol: {type: Boolean},
     password:{type: String},
     ciudad: {type: String, required:true},
     razasFavoritas: {type: Array},
