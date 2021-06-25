@@ -18,8 +18,8 @@ authRoutes.post("/signup", async (req, res) => {
   const usuario = req.body.usuario;
   const pass = req.body.pass;
   const rol = req.body.rol;
-const ciudad = req.body.ciudad;
-const email = req.body.email;
+  const ciudad = req.body.ciudad;
+  const email = req.body.email;
   if (!usuario || !pass || !rol || !ciudad || !email) {
     res.send({
       auth: false,
@@ -37,7 +37,7 @@ const email = req.body.email;
     });
     return;
   }
-  let foundUsuario = await Usuario.findOne({ email: email}).then(
+  let foundUsuario = await Usuario.findOne({ email: email }).then(
     (repeatedusuario) => {
       return repeatedusuario;
     }
@@ -56,7 +56,7 @@ const email = req.body.email;
     nombre: usuario,
     password: hashPass,
     rol: rol,
-    email: email, 
+    email: email,
     ciudad: ciudad,
   })
     .then((usuarioCreado) => {
@@ -71,15 +71,19 @@ const email = req.body.email;
       return;
     });
 
-  const newToken = jwt.sign({ id: nuevoUsuario._id, rol: nuevoUsuario.rol }, process.env.SECRET_WORD, {
-    expiresIn: expirationTime,
-  });
+  const newToken = jwt.sign(
+    { id: nuevoUsuario._id, rol: nuevoUsuario.rol },
+    process.env.SECRET_WORD,
+    {
+      expiresIn: expirationTime,
+    }
+  );
   res.send({ auth: true, token: newToken });
 });
 
 authRoutes.post("/login", async (req, res) => {
-let email = req.body.email;
-let pass = req.body.password;
+  let email = req.body.email;
+  let pass = req.body.password;
 
   let usuario = await Usuario.findOne({ email: email }).then(
     (usuarioEncontrado) => {
@@ -96,10 +100,14 @@ let pass = req.body.password;
     res.send({ auth: false, token: null, message: "Incorrect Password" });
     return;
   }
-  const newToken = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.SECRET_WORD, {
-    expiresIn: expirationTime,
-  });
-  res.send({ auth: true, token: newToken , message:"Login succesful!"});
+  const newToken = jwt.sign(
+    { id: usuario._id, rol: usuario.rol },
+    process.env.SECRET_WORD,
+    {
+      expiresIn: expirationTime,
+    }
+  );
+  res.send({ auth: true, token: newToken, message: "Login succesful!" });
 });
 
 authRoutes.get("/private", async (req, res) => {
@@ -114,7 +122,9 @@ authRoutes.get("/private", async (req, res) => {
 
   const decoded = jwt.verify(token, process.env.SECRET_WORD);
 
-  const usuario = await Usuario.findById(decoded.id, {password:0}).populate("perrosFavoritos");
+  const usuario = await Usuario.findById(decoded.id, { password: 0 }).populate(
+    "perrosFavoritos"
+  );
   if (!usuario) {
     res.send({ auth: false, message: "User does not exist" });
     return;

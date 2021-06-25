@@ -3,11 +3,9 @@ const tokenValidation = require("../functions/tokenAuthentication");
 const router = express.Router();
 
 const Veterinario = require("../models/veterinario");
-const tokenValidate = require("../functions/tokenAuthentication")
-
+const tokenValidate = require("../functions/tokenAuthentication");
 
 router.get("/veterinarios", async (req, res) => {
-
   console.log(myToken);
   let veterinarios = await Veterinario.find()
     .then((todosLosVeterinarios) => {
@@ -23,10 +21,10 @@ router.get("/veterinario", async (req, res) => {
   let myToken = req.headers.token;
   let veterinario = await tokenValidation(res, myToken);
 
-  if(!veterinario){
-    return
+  if (!veterinario) {
+    return;
   }
-  
+
   res.send(veterinario);
 });
 
