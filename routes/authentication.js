@@ -72,7 +72,7 @@ authRoutes.post("/signup", async (req, res) => {
     });
 
   const newToken = jwt.sign(
-    { id: nuevoUsuario._id, rol: nuevoUsuario.rol },
+    {id: nuevoUsuario._id, rol: nuevoUsuario.rol },
     process.env.SECRET_WORD,
     {
       expiresIn: expirationTime,

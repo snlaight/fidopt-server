@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const vetCheck = require("../functions/tokenAuthentication");
+const tokenValidation = require("../functions/tokenAuthentication");
 const Perro = require("../models/perro");
+const Usuario = require("../models/usuario");
 
 router.get("/perros", async (req, res) => {
   let perros = await Perro.find()
@@ -16,17 +17,23 @@ router.get("/perros", async (req, res) => {
 });
 
 router.get("/perro/:id", async (req, res) => {
-  let idPerro = req.body.id;
+  let idPerro = req.params.id;
+  console.log(idPerro)
   let perro = await Perro.findById(idPerro).then((perroEncontrado) => {
     return perroEncontrado;
+  })
+  .catch((error)=>{
+    res.send({
+      message: "Perro no existe o ID incorrecto"
+    })
   });
   res.send(perro);
 });
 
-router.post("/nuevoPerro", async (req, res) => {
+router.post("/nuevoPerro", async (req, res, token) => {
   let myToken = req.headers.token;
-  let veterinario = await vetCheck(res, myToken);
-  if (myToken != true) {
+  let veterinario = await tokenValidation(res, myToken, true);
+  if (!veterinario) {
     return;
   }
   let nombrePerro = req.body.nombre;
@@ -44,51 +51,69 @@ router.post("/nuevoPerro", async (req, res) => {
     chip: tieneChip,
   })
     .then((nuevoPerro) => {
-      console.log(nuevoPerro);
       return nuevoPerro;
     })
     .catch((error) => {
       console.log(error);
     });
+  await Usuario.findByIdAndUpdate(veterinario._id, {
+    $push: {perros: perroCreado._id}
+  }).then((usuarioActualizado)=>{
+  })
   res.send(perroCreado);
 });
 
-router.put("/actualizarPerro/:id", async (res, req) => {
-    let myToken = req.headers.token;
-  let veterinario = await vetCheck(res, myToken);
-  if (myToken != true) {
+
+router.put("/actualizarPerro/:id", async (req, res) => {
+  let myToken = req.headers.token;
+  let veterinario = await tokenValidation(res, myToken, true);
+  if (!veterinario) {
     return;
+  }
+  let idPerro = req.params.id;
+  let isMine = false;
+  veterinario.perros.forEach((perro)=>{
+    if(idPerro == perro._id.toString()){
+      isMine = true;
+    }
+  })
+  if (isMine == false){
+    res.send({
+      auth: false,
+      message: "This is not your dog."
+    })
+    return
   }
   let nombrePerro = req.body.nombre;
   let edadPerro = req.body.edad;
-  let idPerro = req.body._id;
   let razaPerro = req.body.raza;
   let vacunaPerro = req.body.vacuna_antirrabica;
   let perroCastrado = req.body.castrado;
   let tieneChip = req.body.chip;
-  Perro.findByIdAndUpdate(idPerro, {
+  let actualizarPerro = await Perro.findByIdAndUpdate(idPerro, {
     nombre: nombrePerro,
     edad: edadPerro,
-    _id: idPerro,
     raza: razaPerro,
     vacuna_antirrabica: vacunaPerro,
     castrado: perroCastrado,
     chip: tieneChip,
   })
     .then((perroActualizado) => {
-      res.redirect(`/perro/${perroActualizado._id}`);
+      return perroActualizado;
     })
     .catch((error) => {
       console.log(error);
-    });
+    })
+    console.log(actualizarPerro)
+  res.redirect(`/perro/${actualizarPerro._id}`)
 });
 
 router.delete("/borrarPerro/:id", async (req, res) => {
-    let myToken = req.headers.token;
-  let veterinario = await vetCheck(res, myToken);
-  if (myToken != true) {
-    return;
-  }
+     let myToken = req.headers.token;
+   let veterinario = await tokenValidation(res, myToken);
+   if (myToken != true) {
+     return;
+   }
   let nuevoIdPerro = req.body.id;
   Perro.findByIdAndDelete(nuevoIdPerro).then((perroBorrado) => {
     res.redirect("/perros");

@@ -2,8 +2,8 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 const Veterinario = require("../models/veterinario");
+
 let tokenValidation = async (response, token, rol) => {
-  let rolUsuario = Usuario.rol;
   let validationResult = {};
   if (!token) {
     response.send({
@@ -23,23 +23,23 @@ let tokenValidation = async (response, token, rol) => {
     });
     return;
   }
-  let veterinarioCheck = await Usuario.findById(validationResult.id, rolUsuario, {
+  let usuarioCheck = await Usuario.findById(validationResult.id,{
     password: 0,
   }).populate("perros");
-  if (!veterinarioCheck) {
+  if (!usuarioCheck) {
     response.send({
       auth: false,
-      message: "Veterinario no existe",
+      message: "usuario no existe",
     });
     return;
   }
-  if (rolUsuario != true) {
+  if (validationResult.rol != rol) {
     response.send({
       auth: false,
-      message: "No puedes acceder si no eres veterinario.",
+      message: "You are not permitted here.",
     });
   }
-  return veterinarioCheck;
+  return usuarioCheck;
 };
 
 module.exports = tokenValidation;

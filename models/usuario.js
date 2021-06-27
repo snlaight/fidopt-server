@@ -2,10 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema ;
 
 const esquemaUsuario = new Schema ({
+    id: {type:String},
     nombre: {type:String, required:true},
     edad: {type: Number},
-    email: {type: String, required:true},
     rol: {type: Boolean},
+    perros: [{type: Schema.Types.ObjectId, ref: "Perro"}],
+    email: {type: String, required:true},
     password:{type: String},
     ciudad: {type: String, required:true},
     razasFavoritas: {type: Array},
