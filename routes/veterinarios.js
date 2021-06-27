@@ -1,9 +1,9 @@
 const express = require("express");
-const tokenValidation = require("../functions/tokenAuthentication").tokenValidation
+const tokenValidation =
+  require("../functions/tokenAuthentication").tokenValidation;
 const router = express.Router();
 
 const Veterinario = require("../models/usuario");
-
 
 router.get("/veterinarios", async (req, res) => {
   console.log(myToken);

@@ -23,7 +23,7 @@ let tokenValidation = async (response, token, rol) => {
     });
     return;
   }
-  let usuarioCheck = await Usuario.findById(validationResult.id,{
+  let usuarioCheck = await Usuario.findById(validationResult.id, {
     password: 0,
   }).populate("perros");
   if (!usuarioCheck) {

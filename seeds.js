@@ -111,13 +111,13 @@ let usuarios = [
   },
   {
     nombre: "Santiago Laight",
-    rol:false,
+    rol: false,
     edad: 32,
     email: "snlaight10@gmail.com",
     password: "holahola",
     ciudad: "Barcelona",
     razasFavoritas: ["Golden Retriever", "Mezcla", "Pastor Aleman"],
-    perrosFavoritos:["60c5fbdc8c3b2720a2e13643"],
+    perrosFavoritos: ["60c5fbdc8c3b2720a2e13643"],
     interesEnAdoptar: true,
   },
   {
@@ -141,7 +141,6 @@ let usuarios = [
     interesEnAdoptar: true,
   },
 ];
-
 
 usuarios.forEach((usuario) => {
   let hashPass = bcrypt.hashSync(usuario.password, salt);
@@ -180,9 +179,7 @@ Perro.deleteMany()
         console.log(
           `${veterinariosCreados.length} veterinarios creados con los siguientes nombres:`
         );
-        console.log(
-          veterinariosCreados.map((usuarios) => usuarios.nombre)
-        );
+        console.log(veterinariosCreados.map((usuarios) => usuarios.nombre));
       })
       .then(() => {
         mongoose.disconnect();
