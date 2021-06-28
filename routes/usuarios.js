@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const Usuario = require("../models/usuario");
+const tokenValidation = require("../functions/tokenAuthentication");
+
 
 router.get("/usuarios", async (req, res) => {
   let usuarios = await Usuario.find()
@@ -53,7 +55,12 @@ router.post("/nuevoUsuario", async (req, res) => {
   res.send(usuarioCreado);
 });
 
-router.put("/actualizarUsuario/:id", async (req, res) => {
+router.put("/actualizarUsuario/:id", async (req, res, token) => {
+  let myToken = req.headers.token;
+  let veterinario = await tokenValidation(res, myToken, true);
+  if (!veterinario) {
+    return;
+  }
   let nombreUsuario = req.body.nombre;
   let idUsuario = req.params.id;
   let edadUsuario = req.body.usuario;

@@ -18,7 +18,6 @@ router.get("/perros", async (req, res) => {
 
 router.get("/perro/:id", async (req, res) => {
   let idPerro = req.params.id;
-  console.log(idPerro)
   let perro = await Perro.findById(idPerro).then((perroEncontrado) => {
     return perroEncontrado;
   })

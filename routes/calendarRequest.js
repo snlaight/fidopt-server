@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const tokenValidation=require("../functions/tokenAuthentication");
 const meetingRequest = require("../models/Requests");
 
 router.get("/meetingRequests", async (req, res) => {
@@ -26,6 +27,11 @@ router.get("/meetingRequest/:id", async (req, res) => {
 });
 
 router.post("/newMeetingRequest", async (req, res) => {
+  let myToken = req.headers.token;
+  let usuario = await tokenValidation(res, myToken, false);
+  if (!usuario) {
+    return;
+  }
   let reasonForMeeting = req.body.motiveForVisit;
   let meetingDate = req.body.date;
   let currentCity = req.body.ciudad;
@@ -45,6 +51,11 @@ router.post("/newMeetingRequest", async (req, res) => {
 });
 
 router.put("/updateMeetingRequest/:id", (req, res) => {
+  let myToken = req.headers.token;
+  let usuario = await tokenValidation(res, myToken, TextTrackCue);
+  if (!usuario) {
+    return;
+  }
   let reasonForMeeting = req.body.motiveForVisit;
   let requestID = req.params.id;
   let meetingDate = req.body.date;

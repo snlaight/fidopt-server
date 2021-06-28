@@ -1,13 +1,11 @@
 const express = require("express");
-const tokenValidation =
-  require("../functions/tokenAuthentication").tokenValidation;
+const tokenValidation = require("../functions/tokenAuthentication")
 const router = express.Router();
 
 const Veterinario = require("../models/usuario");
 
 router.get("/veterinarios", async (req, res) => {
-  console.log(myToken);
-  let veterinarios = await Veterinario.find()
+  let veterinarios = await Veterinario.find({rol: true})
     .then((todosLosVeterinarios) => {
       return todosLosVeterinarios;
     })
@@ -17,58 +15,44 @@ router.get("/veterinarios", async (req, res) => {
   res.send(veterinarios);
 });
 
-router.get("/veterinario", async (req, res) => {
-  let myToken = req.headers.token;
-  let veterinario = await tokenValidation(res, myToken);
-
-  if (!veterinario) {
-    return;
-  }
-
+router.get("/veterinario/:id", async (req, res) => {
+ let idVeterinario= req.params.id;
+  let veterinario = await Veterinario.findById(idVeterinario).then((vetEncontrado)=>{
+    return vetEncontrado
+  })
   res.send(veterinario);
 });
 
-router.post("/nuevoVeterinario", async (req, res) => {
-  let nombreVeterinario = req.body.nombre;
-  let nombreVeterinaria = req.body.veterinaria;
-  let nombrePerros = req.body.perros;
-  let ratingVeterinario = req.body.rating;
-  let veterinarioCreado = await Veterinario.create({
-    nombre: nombreVeterinario,
-    veterinaria: nombreVeterinaria,
-    perros: nombrePerros,
-    rating: ratingVeterinario,
-  })
-    .then((nuevoVeterinario) => {
-      return nuevoVeterinario;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  res.send(veterinarioCreado);
-});
 
-router.put("/actualizarVeterinario/:id", (req, res) => {
+router.put("/actualizarVeterinario/:id", async (req, res, token) => {
+  let myToken = req.headers.token;
+  let veterinarioValidate = await tokenValidation(res, myToken, true);
+  if (!veterinarioValidate) {
+    return;
+  }
+  let idVet = req.params.id;
   let nombreVeterinario = req.body.nombre;
-  let idVeterinario = req.params.id;
   let nombreVeterinaria = req.body.veterinaria;
-  let nombrePerros = req.body.perros;
   let ratingVeterinario = req.body.rating;
-  Veterinario.findByIdAndUpdate(idVeterinario, {
+  console.log(idVet)
+ let  veterinarioActualizado = await Veterinario.findByIdAndUpdate(idVet, {
     nombre: nombreVeterinario,
     veterinaria: nombreVeterinaria,
-    perros: nombrePerros,
     rating: ratingVeterinario,
+  }).then((vetCompletado)=>{
+    return vetCompletado
+  }).catch((error)=>{
+    console.log(error)
   })
-    .then((veterinarioActualizado) => {
       res.redirect(`/veterinario/${veterinarioActualizado.id}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 });
 
-router.delete("/borrarVeterinario/:id", (req, res) => {
+router.delete("/borrarVeterinario/:id", async (req, res) => {
+  let myToken = req.headers.token;
+  let veterinario = await tokenValidation(res, myToken, true);
+  if (!veterinario) {
+    return;
+  }
   let idVeterinario = req.params.id;
   Veterinario.findByIdAndDelete(idVeterinario).then((veterinarioBorrado) => {
     res.redirect("/veterinarios");
