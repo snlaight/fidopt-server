@@ -17,9 +17,15 @@ router.get("/veterinarios", async (req, res) => {
 
 router.get("/veterinario/:id", async (req, res) => {
  let idVeterinario= req.params.id;
+ console.log(idVeterinario)
   let veterinario = await Veterinario.findById(idVeterinario).then((vetEncontrado)=>{
+    console.log(vetEncontrado)
     return vetEncontrado
-  })
+  }).catch((error)=>{
+    res.send({
+      message: "Veterinario no existe o ID incorrecto"
+    })
+  });
   res.send(veterinario);
 });
 
@@ -30,12 +36,11 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   if (!veterinarioValidate) {
     return;
   }
-  let idVet = req.params.id;
   let nombreVeterinario = req.body.nombre;
   let nombreVeterinaria = req.body.veterinaria;
   let ratingVeterinario = req.body.rating;
-  console.log(idVet)
- let  veterinarioActualizado = await Veterinario.findByIdAndUpdate(idVet, {
+  let idVet = veterinarioValidate._id
+ let  veterinarioActualizado = await Veterinario.findByIdAndUpdate(idVet.toString(), {
     nombre: nombreVeterinario,
     veterinaria: nombreVeterinaria,
     rating: ratingVeterinario,
@@ -44,7 +49,8 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   }).catch((error)=>{
     console.log(error)
   })
-      res.redirect(`/veterinario/${veterinarioActualizado.id}`);
+  console.log({veterinarioActualizado})
+      res.redirect(`/veterinario/${veterinarioActualizado._id}`);
 });
 
 router.delete("/borrarVeterinario/:id", async (req, res) => {
@@ -53,8 +59,8 @@ router.delete("/borrarVeterinario/:id", async (req, res) => {
   if (!veterinario) {
     return;
   }
-  let idVeterinario = req.params.id;
-  Veterinario.findByIdAndDelete(idVeterinario).then((veterinarioBorrado) => {
+  let idVeterinario = veterinario._id
+  Veterinario.findByIdAndDelete(idVeterinario.toString()).then((veterinarioBorrado) => {
     res.redirect("/veterinarios");
   });
 });
