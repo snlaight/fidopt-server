@@ -18,7 +18,6 @@ router.get("/veterinarios", async (req, res) => {
 
 router.get("/veterinario/:id", async (req, res) => {
   let idVeterinario = req.params.id;
-  console.log(idVeterinario);
   let veterinario = await Veterinario.findById(idVeterinario)
     .then((vetEncontrado) => {
       console.log(vetEncontrado);
@@ -41,24 +40,29 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   console.log({ veterinarioValidate });
   console.log(veterinarioValidate);
   let idVeterinario = req.params.id;
-  console.log(idVet);
-  let isMine = false;
-  Usuario.findOne((veterinario) => {
-    if (idVeterinario == veterinario._id.toString()) {
-      isMine = true;
-    }
+  let idVet = veterinarioValidate._id;
+  // let isMine = false;
+  let usuarioEncontrado = Usuario.findById(idVeterinario).then((usuario) => {
+   
+    return usuario;
   });
-  if (isMine == false) {
-    res.send({
-      auth: false,
-      message: "This is not your profile.",
-    });
-    return;
-  }
+  console.log(usuarioEncontrado)
+  // Usuario.findOne((veterinario) => {
+  //   if (idVeterinario == .toString()) {
+  //     isMine = true;
+  //   }
+  // });
+  // if (isMine == false) {
+  //   res.send({
+  //     auth: false,
+  //     message: "This is not your profile.",
+  //   });
+  //   return;
+  // }
   let nombreVeterinario = req.body.nombre;
   let nombreVeterinaria = req.body.veterinaria;
   let ratingVeterinario = req.body.rating;
-  let idVet = veterinarioValidate._id;
+  console.log(idVet)
   let veterinarioActualizado = await Veterinario.findByIdAndUpdate(
     idVet.toString(),
     {
@@ -85,9 +89,8 @@ router.delete("/borrarVeterinario/:id", async (req, res, token) => {
   }
   let isMine = false;
   let idVeterinario = req.params.id;
-  let validateId = await Usuario.findOne((veterinario) => {
+  let validateId = await Usuario.findOne({_id: idVeterinario}).then(()=> {
     let idVet = veterinarioValidate._id;
-
     if (idVeterinario == idVet) {
       isMine = true;
     }
@@ -98,8 +101,8 @@ router.delete("/borrarVeterinario/:id", async (req, res, token) => {
       message: "You can't delete a profile that isn't yours.",
     });
     return;
-  }
-  console.log({ validateId });
+  } 
+  console.log({validateId});
   Veterinario.findByIdAndDelete(idVeterinario.toString()).then(
     (veterinarioBorrado) => {
       res.redirect("/veterinarios");
