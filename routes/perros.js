@@ -109,14 +109,33 @@ router.put("/actualizarPerro/:id", async (req, res) => {
 
 router.delete("/borrarPerro/:id", async (req, res) => {
      let myToken = req.headers.token;
-   let veterinario = await tokenValidation(res, myToken);
-   if (myToken != true) {
+   let veterinario = await tokenValidation(res, myToken, true);
+   if (!veterinario) {
      return;
    }
-  let nuevoIdPerro = req.body.id;
-  Perro.findByIdAndDelete(nuevoIdPerro).then((perroBorrado) => {
+   let idPerro = req.params.id;
+   let isMine = false;
+   veterinario.perros.forEach((perro)=>{
+     if(idPerro == perro._id.toString()){
+       isMine = true;
+     }
+   })
+   if (isMine == false){
+     res.send({
+       auth: false,
+       message: "This is not your dog."
+     })
+     return
+   }
+  Perro.findByIdAndDelete(idPerro).then((perroBorrado) => {
+     Usuario.findByIdAndUpdate(veterinario._id, {
+      $pull: {perros: idPerro}
+    }).then((usuarioActualizado)=>{
+
     res.redirect("/perros");
-  });
+  }); 
+
+})
 });
 
 module.exports = router;

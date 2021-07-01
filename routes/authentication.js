@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
 
 const minPassLength = 8;
-const expirationTime = 1800;
+const expirationTime = 21600;
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -107,7 +107,8 @@ authRoutes.post("/login", async (req, res) => {
       expiresIn: expirationTime,
     }
   );
-  res.send({ auth: true, token: newToken, message: "Login succesful!" });
+  console.log({usuario})
+  res.send({ auth: true, token: newToken, message: "Login succesful!"});
 });
 
 authRoutes.get("/private", async (req, res) => {

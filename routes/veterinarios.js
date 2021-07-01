@@ -1,5 +1,6 @@
 const express = require("express");
-const tokenValidation = require("../functions/tokenAuthentication")
+const tokenValidation = require("../functions/tokenAuthentication");
+const Usuario = require("../models/usuario");
 const router = express.Router();
 
 const Veterinario = require("../models/usuario");
@@ -36,6 +37,23 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   if (!veterinarioValidate) {
     return;
   }
+  console.log({veterinarioValidate});
+  console.log(veterinarioValidate)
+  let idVeterinario = req.params.id;
+  console.log(idVet)
+  let isMine = false;
+  Usuario.findOne((veterinario)=>{
+    if(idVeterinario == veterinario._id.toString()){
+      isMine = true;
+    }
+  })
+  if (isMine == false){
+    res.send({
+      auth: false,
+      message: "This is not your profile."
+    })
+    return
+  }
   let nombreVeterinario = req.body.nombre;
   let nombreVeterinaria = req.body.veterinaria;
   let ratingVeterinario = req.body.rating;
@@ -59,7 +77,19 @@ router.delete("/borrarVeterinario/:id", async (req, res) => {
   if (!veterinario) {
     return;
   }
-  let idVeterinario = veterinario._id
+  let idVeterinario = veterinario._id;
+  let itsMe = false;
+  Veterinario.forEach((veterinario)=>{
+    if(idVeterinario == veterinario._id.toString()){
+      itsMe = true;
+    }
+  })
+  if(itsMe == false){
+    res.send({
+      auth:false,
+      message: "You can't delete a profile that isn't yours."
+    })
+  }
   Veterinario.findByIdAndDelete(idVeterinario.toString()).then((veterinarioBorrado) => {
     res.redirect("/veterinarios");
   });
