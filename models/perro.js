@@ -8,7 +8,7 @@ const esquemaPerros = new Schema({
     vacuna_antirrabica: {type: Boolean, required:true},
     castrado: {type: String},
     chip:{type:String, required: true},
-    veterinaria : {type: String},
+    veterinario : [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
     // veterinaria: [{type: Schema.Types.ObjectId, ref: "Veterinario"}],
 },{
     timestamps: {

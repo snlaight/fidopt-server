@@ -3,6 +3,9 @@ const router = express.Router();
 
 const tokenValidation = require("../functions/tokenAuthentication");
 const adoptionRequest = require("../models/Requests");
+const Usuario = require("../models/usuario");
+const Veterinario = require("../models/usuario");
+
 
 router.get("/adoptionRequests", async (req, res) => {
   let adoptionRequests = await adoptionRequest
@@ -32,6 +35,7 @@ router.post("/newAdoptionRequest", async (req, res) => {
   if (!usuario) {
     return;
   }
+  let idUsuario = usuario._id
   let reasonForAdoption = req.body.adoptionReason;
   let currentCity = req.body.ciudad;
   let createdRequest = await adoptionRequest
@@ -45,6 +49,14 @@ router.post("/newAdoptionRequest", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+    let idRequest = createdRequest._id;
+    await Usuario.findByIdAndUpdate(idUsuario, {
+      $push: {adoptionRequests: idRequest}
+    }).then((usuarioActualizado)=>{
+
+    });
+    //await Veterinario.find({perros: })//
+
   res.send(createdRequest);
 });
 
