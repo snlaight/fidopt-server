@@ -16,6 +16,23 @@ router.get("/usuarios", async (req, res) => {
   res.send(usuarios);
 });
 
+router.get("/usuario", async(req,res,token)=>{
+  let myToken = req.headers.token;
+  let tokenValidate= await tokenValidation(res,myToken, false);
+  if(!tokenValidate){
+    return
+  }
+  let idUsuario = tokenValidate._id;
+  let usuario = await Usuario.findById(idUsuario).then((usuarioEncontrado)=>{
+    return usuarioEncontrado
+  }).catch((error)=>{
+    res.send({
+      message:"Usuario no existe"
+    })
+  })
+  res.send(usuario)
+})
+
 router.get("/usuario/:id", async (req, res) => {
   let idUsuario = req.params.id;
   let usuario = await Usuario.findById(idUsuario).then(

@@ -16,6 +16,26 @@ router.get("/veterinarios", async (req, res) => {
   res.send(veterinarios);
 });
 
+router.get("/veterinario", async (req,res, token)=>{
+  let myToken = req.headers.token
+  console.log({myToken})
+  let tokenValidate = await tokenValidation(res, myToken, true)
+  if (!tokenValidate){
+    return
+  }
+  let idVet = tokenValidate._id;
+  console.log({tokenValidate});
+  console.log(idVet);
+let veterinario = await Veterinario.findById(idVet).then((vetEncontrado)=>{
+  return vetEncontrado
+}).catch((error)=>{
+  res.send({
+    message: "Veterinario no existe"
+  })
+})
+res.send(veterinario);
+})
+
 router.get("/veterinario/:id", async (req, res) => {
   let idVeterinario = req.params.id;
   let veterinario = await Veterinario.findById(idVeterinario)
@@ -37,38 +57,30 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   if (!veterinarioValidate) {
     return;
   }
-  console.log({ veterinarioValidate });
-  console.log(veterinarioValidate);
   let idVeterinario = req.params.id;
   let idVet = veterinarioValidate._id;
-  // let isMine = false;
   let usuarioEncontrado = Usuario.findById(idVeterinario).then((usuario) => {
-   
+    let isMine = false;
+      if (idVeterinario == idVet.toString()) {
+        isMine = true;
+      }
+    if (isMine == false) {
+      res.send({
+        auth: false,
+        message: "This is not your profile.",
+      });
+      return;
+    }
     return usuario;
   });
-  console.log(usuarioEncontrado)
-  // Usuario.findOne((veterinario) => {
-  //   if (idVeterinario == .toString()) {
-  //     isMine = true;
-  //   }
-  // });
-  // if (isMine == false) {
-  //   res.send({
-  //     auth: false,
-  //     message: "This is not your profile.",
-  //   });
-  //   return;
-  // }
+
   let nombreVeterinario = req.body.nombre;
   let nombreVeterinaria = req.body.veterinaria;
-  let ratingVeterinario = req.body.rating;
-  console.log(idVet)
   let veterinarioActualizado = await Veterinario.findByIdAndUpdate(
     idVet.toString(),
     {
       nombre: nombreVeterinario,
       veterinaria: nombreVeterinaria,
-      rating: ratingVeterinario,
     }
   )
     .then((vetCompletado) => {

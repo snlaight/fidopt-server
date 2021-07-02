@@ -78,7 +78,13 @@ authRoutes.post("/signup", async (req, res) => {
       expiresIn: expirationTime,
     }
   );
-  res.send({ auth: true, token: newToken });
+  res.send({ auth: true, token: newToken })
+  if(newToken.rol == true){
+    res.redirect(`/veterinario`)
+  };
+  if(newToken.rol == false){
+    res.redirect(`/usuario`)
+  }
 });
 
 authRoutes.post("/login", async (req, res) => {
