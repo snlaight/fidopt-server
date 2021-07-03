@@ -1,4 +1,5 @@
-require("./dbConfig/dbConfig")
+require("./dbConfig/dbConfig");
+const cors = require('cors');
 const express = require("express");
 const app = express();
 
@@ -11,6 +12,8 @@ app.use((error, req, res, next)=>{
         message: error.message
     });
 });
+
+app.use(cors());
 
 const veterinarios = require('./routes/veterinarios');
 app.use('/',veterinarios)
