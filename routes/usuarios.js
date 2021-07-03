@@ -4,6 +4,9 @@ const router = express.Router();
 const Usuario = require("../models/usuario");
 const tokenValidation = require("../functions/tokenAuthentication");
 
+router.get("/", (req,res)=>{
+  res.send("Home page")
+})
 
 router.get("/usuarios", async (req, res) => {
   let usuarios = await Usuario.find()

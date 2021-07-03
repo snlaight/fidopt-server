@@ -17,7 +17,7 @@ const esquemaUsuario = new Schema(
     interesEnAdoptar: { type: Boolean },
     perrosFavoritos: [{ type: Schema.Types.ObjectId, ref: "Perro" }],
     meetingRequests:[{ type: Schema.Types.ObjectId, ref: "Request" }],
-    adoptionRequests:[{ type: Schema.Types.ObjectId, ref: "Request" }],
+    Requests:[{ type: Schema.Types.ObjectId, ref: "Request" }],
   },
   {
     timestamps: {
