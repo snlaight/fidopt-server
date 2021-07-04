@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const tokenValidation=require("../functions/tokenAuthentication");
+const tokenValidation = require("../functions/tokenAuthentication");
 const meetingRequest = require("../models/Requests");
 const Usuario = require("../models/usuario");
 
@@ -49,12 +49,10 @@ router.post("/newMeetingRequest", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
-    let idRequest = newMeetingRequest._id;
-    await Usuario.findByIdAndUpdate(idUsuario, {
-      $push: {meetingRequests: idRequest}
-    }).then((usuarioActualizado)=>{
-      
-    })
+  let idRequest = newMeetingRequest._id;
+  await Usuario.findByIdAndUpdate(idUsuario, {
+    $push: { meetingRequests: idRequest },
+  }).then((usuarioActualizado) => {});
   res.send(newMeetingRequest);
 });
 
