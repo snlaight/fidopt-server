@@ -56,7 +56,7 @@ router.post("/newMeetingRequest", async (req, res) => {
   res.send(newMeetingRequest);
 });
 
-router.put("/updateMeetingRequest/:id", (req, res) => {
+router.put("/updateMeetingRequest/:id", async (req, res) => {
   let myToken = req.headers.token;
   let usuario = await tokenValidation(res, myToken, TextTrackCue);
   if (!usuario) {

@@ -5,14 +5,13 @@ const Request = new Schema(
   {
     idUser: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
     adoptionReason: {
-      type: String,
-      required: true,
-      message: "This field is required.",
+      type: String
     },
+    id: {type:String},
     status: { type: String },
     ciudad: { type: String },
     date: {type:Date},
-    motiveForVisit: {type:String, required: true},
+    motiveForVisit: {type:String},
   },
   {
     timestamps: {

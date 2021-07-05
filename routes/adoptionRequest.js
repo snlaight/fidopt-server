@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const tokenValidation = require("../functions/tokenAuthentication");
+const Perro = require("../models/perro");
 const adoptionRequest = require("../models/Requests");
 const Usuario = require("../models/usuario");
 const Veterinario = require("../models/usuario");
-
 
 router.get("/adoptionRequests", async (req, res) => {
   let adoptionRequests = await adoptionRequest
@@ -29,19 +29,23 @@ router.get("/adoptionRequest/:id", async (req, res) => {
   res.send(requestAdoption);
 });
 
-router.post("/newAdoptionRequest", async (req, res) => {
+router.post("/newAdoptionRequest/:idPerro", async (req, res) => {
   let myToken = req.headers.token;
   let usuario = await tokenValidation(res, myToken, false);
   if (!usuario) {
     return;
   }
-  let idUsuario = usuario._id
+  let idPerro = req.params.idPerro;
+  let idUsuario = usuario._id;
   let reasonForAdoption = req.body.adoptionReason;
   let currentCity = req.body.ciudad;
+  let pending = "Pending";
   let createdRequest = await adoptionRequest
     .create({
+      idUser: idUsuario,
       adoptionReason: reasonForAdoption,
       ciudad: currentCity,
+      status: pending,
     })
     .then((newRequest) => {
       return newRequest;
@@ -49,18 +53,28 @@ router.post("/newAdoptionRequest", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
-    let idRequest = createdRequest._id;
-    await Usuario.findByIdAndUpdate(idUsuario, {
-      $push: {adoptionRequests: idRequest}
-    }).then((usuarioActualizado)=>{
-
+  let idRequest = createdRequest._id;
+  await Usuario.findByIdAndUpdate(idUsuario, {
+    $push: { adoptionRequests: idRequest },
+  })
+    .then((usuarioActualizado) => {})
+    .catch((error) => {
+      console.log(error);
     });
-    //await Veterinario.find({perros: })//
-
+  await Veterinario.findOneAndUpdate(
+    { perros: idPerro },
+    {
+      $push: { adoptionRequests: idRequest },
+    }
+  )
+    .then((veterinarioActualizado) => {})
+    .catch((error) => {
+      console.log(error);
+    });
   res.send(createdRequest);
 });
 
-router.put("/updateAdoptionRequest/:id", (req, res) => {
+router.put("/updateAdoptionRequest/:id", async (req, res) => {
   let myToken = req.headers.token;
   let veterinario = await tokenValidation(res, myToken, true);
   if (!veterinario) {
@@ -86,9 +100,12 @@ router.put("/updateAdoptionRequest/:id", (req, res) => {
 
 router.delete("/deleteAdoptionRequest/:id", (req, res) => {
   let idRequest = req.params.id;
-  adoptionRequest.findByIDAndDelete(idRequest).then((deletedRequest) => {
-    res.redirect("/adoptionRequests");
-  });
+  adoptionRequest.findByIDAndDelete(idRequest).then((deletedRequest) => {});
+  Usuario.findOneAndUpdate(
+    { adoptionRequest: idRequest },
+    { $pull: { adoptionRequest: idRequest }}
+  ).then((usuarioActualizado) => {});
+  res.redirect("/adoptionRequests");
 });
 
 module.exports = router;

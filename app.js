@@ -21,7 +21,10 @@ const perros = require("./routes/perros");
 app.use("/", perros);
 const usuarios = require("./routes/usuarios");
 app.use("/", usuarios);
-
+const adoptionRequests = require("./routes/adoptionRequest")
+app.use("/",adoptionRequests)
+const meetingRequests = require("./routes/calendarRequest");
+app.use("/", meetingRequests);
 const authentication = require("./routes/authentication");
 app.use("/", authentication);
 
