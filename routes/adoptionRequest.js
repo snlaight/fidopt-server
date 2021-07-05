@@ -103,12 +103,13 @@ router.delete("/deleteAdoptionRequest/:id", (req, res) => {
   adoptionRequest.findByIDAndDelete(idRequest).then((deletedRequest) => {});
   Usuario.findOneAndUpdate(
     { adoptionRequest: idRequest },
-    { $pull: { adoptionRequest: idRequest }},
+    { $pull: { adoptionRequest: idRequest } },
     { $pull: { Requests: idRequest } }
-  ).then((usuarioActualizado) => {})
-  .catch((error)=>{
-    console.log(error)
-  });
+  )
+    .then((usuarioActualizado) => {})
+    .catch((error) => {
+      console.log(error);
+    });
   res.redirect("/adoptionRequests");
 });
 

@@ -4,9 +4,9 @@ const router = express.Router();
 const Usuario = require("../models/usuario");
 const tokenValidation = require("../functions/tokenAuthentication");
 
-router.get("/", (req,res)=>{
-  res.send("Home page")
-})
+router.get("/", (req, res) => {
+  res.send("Home page");
+});
 
 router.get("/usuarios", async (req, res) => {
   let usuarios = await Usuario.find()
@@ -19,30 +19,30 @@ router.get("/usuarios", async (req, res) => {
   res.send(usuarios);
 });
 
-router.get("/usuario", async(req,res,token)=>{
+router.get("/usuario", async (req, res, token) => {
   let myToken = req.headers.token;
-  let tokenValidate= await tokenValidation(res,myToken, false);
-  if(!tokenValidate){
-    return
+  let tokenValidate = await tokenValidation(res, myToken, false);
+  if (!tokenValidate) {
+    return;
   }
   let idUsuario = tokenValidate._id;
-  let usuario = await Usuario.findById(idUsuario).then((usuarioEncontrado)=>{
-    return usuarioEncontrado
-  }).catch((error)=>{
-    res.send({
-      message:"Usuario no existe"
+  let usuario = await Usuario.findById(idUsuario)
+    .then((usuarioEncontrado) => {
+      return usuarioEncontrado;
     })
-  })
-  res.send(usuario)
-})
+    .catch((error) => {
+      res.send({
+        message: "Usuario no existe",
+      });
+    });
+  res.send(usuario);
+});
 
 router.get("/usuario/:id", async (req, res) => {
   let idUsuario = req.params.id;
-  let usuario = await Usuario.findById(idUsuario).then(
-      (usuarioEncontrado) => {
+  let usuario = await Usuario.findById(idUsuario).then((usuarioEncontrado) => {
     return usuarioEncontrado;
-  }
-  );
+  });
   res.send(usuario);
 });
 

@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./dbConfig/dbConfig")
+require("./dbConfig/dbConfig");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
@@ -8,7 +8,6 @@ const Veterinario = require("./models/veterinario");
 const Usuario = require("./models/usuario");
 
 const salt = bcrypt.genSaltSync(10);
-
 
 let veterinarios = [
   {

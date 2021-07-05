@@ -5,13 +5,13 @@ const Request = new Schema(
   {
     idUser: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
     adoptionReason: {
-      type: String
+      type: String,
     },
-    id: {type:String},
+    id: { type: String },
     status: { type: String },
     ciudad: { type: String },
-    date: {type:Date},
-    motiveForVisit: {type:String},
+    date: { type: Date },
+    motiveForVisit: { type: String },
   },
   {
     timestamps: {
@@ -21,9 +21,6 @@ const Request = new Schema(
   }
 );
 
-
 const requestMeetingOrAdoption = mongoose.model("Request", Request);
 
-
 module.exports = requestMeetingOrAdoption;
-

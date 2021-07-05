@@ -72,18 +72,18 @@ authRoutes.post("/signup", async (req, res) => {
     });
 
   const newToken = jwt.sign(
-    {id: nuevoUsuario._id, rol: nuevoUsuario.rol },
+    { id: nuevoUsuario._id, rol: nuevoUsuario.rol },
     process.env.SECRET_WORD,
     {
       expiresIn: expirationTime,
     }
   );
-  res.send({ auth: true, token: newToken })
-  if(newToken.rol == true){
-    res.redirect(`/veterinario`)
-  };
-  if(newToken.rol == false){
-    res.redirect(`/usuario`)
+  res.send({ auth: true, token: newToken });
+  if (newToken.rol == true) {
+    res.redirect(`/veterinario`);
+  }
+  if (newToken.rol == false) {
+    res.redirect(`/usuario`);
   }
 });
 
@@ -113,8 +113,8 @@ authRoutes.post("/login", async (req, res) => {
       expiresIn: expirationTime,
     }
   );
-  console.log({usuario})
-  res.send({ auth: true, token: newToken, message: "Login succesful!"});
+  console.log({ usuario });
+  res.send({ auth: true, token: newToken, message: "Login succesful!" });
 });
 
 authRoutes.get("/private", async (req, res) => {
