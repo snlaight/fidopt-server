@@ -64,7 +64,7 @@ router.post("/newAdoptionRequest/:idPerro", async (req, res) => {
   await Veterinario.findOneAndUpdate(
     { perros: idPerro },
     {
-      $push: { adoptionRequests: idRequest },
+      $push: { Requests: idRequest },
     }
   )
     .then((veterinarioActualizado) => {})
@@ -103,8 +103,12 @@ router.delete("/deleteAdoptionRequest/:id", (req, res) => {
   adoptionRequest.findByIDAndDelete(idRequest).then((deletedRequest) => {});
   Usuario.findOneAndUpdate(
     { adoptionRequest: idRequest },
-    { $pull: { adoptionRequest: idRequest }}
-  ).then((usuarioActualizado) => {});
+    { $pull: { adoptionRequest: idRequest } },
+    { $pull: { Requests: idRequest } }
+  ).then((usuarioActualizado) => {})
+  .catch((error)=>{
+    console.log(error)
+  });
   res.redirect("/adoptionRequests");
 });
 
