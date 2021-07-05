@@ -49,7 +49,7 @@ router.post("/newMeetingRequest/:idPerro", async (req, res) => {
       status: pending,
     })
     .then((newRequest) => {
-      return newRequest;
+      return newRequest
     })
     .catch((error) => {
       console.log(error);
@@ -104,7 +104,7 @@ router.delete("/deleteMeetingRequest/:id", (req, res) => {
   meetingRequest.findByIdAndDelete(idRequest).then((deletedRequest) => {});
   Usuario.findOneAndUpdate(
     { meetingRequests: idRequest },
-    { $pull: { meetingRequests: idRequest } },
+    { $pull: { meetingRequests: idRequest }},
     {$pull: {Requests: idRequest}}
   ).then((usuarioActualizado)=>{})
   .catch((error)=>{
