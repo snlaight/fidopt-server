@@ -61,7 +61,7 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
   }
   let idVeterinario = req.params.id;
   let idVet = veterinarioValidate._id;
-  let usuarioEncontrado = Usuario.findById(idVeterinario).then((usuario) => {
+  let usuarioEncontrado = await Usuario.findById(idVeterinario).then((usuario) => {
     let isMine = false;
     if (idVeterinario == idVet.toString()) {
       isMine = true;
@@ -71,11 +71,10 @@ router.put("/actualizarVeterinario/:id", async (req, res, token) => {
         auth: false,
         message: "This is not your profile.",
       });
-      return;
+      return
     }
     return usuario;
   });
-
   let nombreVeterinario = req.body.nombre;
   let nombreVeterinaria = req.body.veterinaria;
   let veterinarioActualizado = await Veterinario.findByIdAndUpdate(
