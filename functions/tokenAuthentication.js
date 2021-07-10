@@ -23,23 +23,53 @@ let tokenValidation = async (response, token, rol) => {
     });
     return;
   }
-  let usuarioCheck = await Usuario.findById(validationResult.id, {
-    password: 0,
-  }).populate("perros");
-  if (!usuarioCheck) {
-    response.send({
-      auth: false,
-      message: "usuario no existe",
-    });
-    return;
+
+  if (validationResult.rol == true) {
+   let veterinarioCheck = await Usuario.findById(validationResult.id, {
+      password: 0,
+    }).populate("perros")
+    console.log(veterinarioCheck);
+    if (!veterinarioCheck) {
+      response.send({
+        auth: false,
+        message: "usuario no existe",
+      });
+      return;
+    }
+    if (validationResult.rol != rol) {
+      response.send({
+        auth: false,
+        message: "You are not permitted here.",
+      });
+    } 
+    return veterinarioCheck
+  } else if (validationResult.rol == false) {
+   let checkUsuario = await Usuario.findById(validationResult.id, {
+      password: 0,
+    }).populate("perrosFavoritos")
+    console.log(checkUsuario);
+    if (!checkUsuario) {
+      response.send({
+        auth: false,
+        message: "usuario no existe",
+      });
+      return;
+    }
+    if (validationResult.rol != rol) {
+      response.send({
+        auth: false,
+        message: "You are not permitted here.",
+      });
+  
+    }
+    return checkUsuario
   }
-  if (validationResult.rol != rol) {
-    response.send({
-      auth: false,
-      message: "You are not permitted here.",
-    });
-  }
-  return usuarioCheck;
+  // const usuarioCheck = await  Usuario.findById(validationResult.id, {
+  //   password: 0,
+  // }).populate("perrosFavoritos")
+  
+  
+  // return usuarioCheck;
 };
 
 module.exports = tokenValidation;

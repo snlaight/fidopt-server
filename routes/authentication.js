@@ -90,7 +90,7 @@ authRoutes.post("/signup", async (req, res) => {
 authRoutes.post("/login", async (req, res) => {
   let email = req.body.email;
   let pass = req.body.password;
-
+  
   let usuario = await Usuario.findOne({ email: email }).then(
     (usuarioEncontrado) => {
       return usuarioEncontrado;

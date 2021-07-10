@@ -18,24 +18,26 @@ router.get("/veterinarios", async (req, res) => {
 
 router.get("/veterinario", async (req, res, token) => {
   let myToken = req.headers.token;
-  console.log({ myToken });
   let tokenValidate = await tokenValidation(res, myToken, true);
   if (!tokenValidate) {
     return;
   }
-  let idVet = tokenValidate._id;
-  console.log({ tokenValidate });
-  console.log(idVet);
-  let veterinario = await Veterinario.findById(idVet)
-    .then((vetEncontrado) => {
-      return vetEncontrado;
-    })
-    .catch((error) => {
-      res.send({
-        message: "Veterinario no existe",
-      });
-    });
-  res.send(veterinario);
+  let obj = {
+    user: tokenValidate,
+    auth: true,
+    message: "You are permitted."
+  };
+  // let idVet = tokenValidate._id;
+  // let veterinario = await Veterinario.findById(idVet)
+  //   .then((vetEncontrado) => {
+  //     return vetEncontrado;
+  //   })
+  //   .catch((error) => {
+  //     res.send({
+  //       message: "Veterinario no existe",
+  //     });
+  //   });
+  res.send(obj);
 });
 
 router.get("/veterinario/:id", async (req, res) => {
