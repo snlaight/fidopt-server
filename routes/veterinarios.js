@@ -27,16 +27,7 @@ router.get("/veterinario", async (req, res, token) => {
     auth: true,
     message: "You are permitted."
   };
-  // let idVet = tokenValidate._id;
-  // let veterinario = await Veterinario.findById(idVet)
-  //   .then((vetEncontrado) => {
-  //     return vetEncontrado;
-  //   })
-  //   .catch((error) => {
-  //     res.send({
-  //       message: "Veterinario no existe",
-  //     });
-  //   });
+
   res.send(obj);
 });
 
