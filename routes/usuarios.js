@@ -25,17 +25,12 @@ router.get("/usuario", async (req, res, token) => {
   if (!tokenValidate) {
     return;
   }
-  // let idUsuario = tokenValidate._id;
-  // let usuario = await Usuario.findById(idUsuario)
-  //   .then((usuarioEncontrado) => {
-  //     return usuarioEncontrado;
-  //   })
-  //   .catch((error) => {
-  //     res.send({
-  //       message: "Usuario no existe",
-  //     });
-    // });
-  res.send(tokenValidate);
+ let obj = {
+   user: tokenValidate,
+   auth: true,
+   message: "You are permitted"
+ }
+  res.send(obj);
 });
 
 router.get("/usuario/:id", async (req, res) => {
