@@ -61,7 +61,6 @@ router.post("/nuevoUsuario", async (req, res) => {
     interesEnAdoptar: interesUsuario,
   })
     .then((nuevoUsuario) => {
-      console.log(nuevoUsuario);
       return nuevoUsuario;
     })
     .catch((error) => {

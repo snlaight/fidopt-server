@@ -113,7 +113,7 @@ authRoutes.post("/login", async (req, res) => {
       expiresIn: expirationTime,
     }
   );
-  console.log({ usuario });
+
   res.send({ auth: true, token: newToken, message: "Login succesful!" });
 });
 
