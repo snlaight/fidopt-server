@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Request = new Schema(
   {
     idUser: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
+    idPerro: {type: String},
     adoptionReason: {
       type: String,
     },
