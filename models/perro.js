@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 const esquemaPerros = new Schema(
   {
-    nombre: { type: String, required: true },
+    nombre: { type: String},
     edad: { type: Number },
     raza: { type: String },
-    vacuna_antirrabica: { type: Boolean, required: true },
+    vacuna_antirrabica: { type: String },
     castrado: { type: String },
-    chip: { type: String, required: true },
+    chip: { type: String},
     veterinario: [{ type: Schema.Types.ObjectId, ref: "Usuario" }],
     // veterinaria: [{type: Schema.Types.ObjectId, ref: "Veterinario"}],
   },

@@ -6,7 +6,7 @@ const esquemaVeterinarios = new Schema(
     nombre: { type: String },
     password: { type: String },
     rol: { type: Boolean },
-    veterinaria: { type: String, required: true },
+    veterinaria: { type: String},
     rating: { type: Number },
     perros: [{ type: Schema.Types.ObjectId, ref: "Perro" }],
   },

@@ -20,6 +20,7 @@ authRoutes.post("/signup", async (req, res) => {
   const rol = req.body.rol;
   const ciudad = req.body.ciudad;
   const email = req.body.email;
+  console.log(usuario, pass, email, rol, ciudad)
   if (!usuario || !pass || !rol || !ciudad || !email) {
     res.send({
       auth: false,
@@ -80,10 +81,10 @@ authRoutes.post("/signup", async (req, res) => {
   );
   res.send({ auth: true, token: newToken });
   if (newToken.rol == true) {
-    res.redirect(`/veterinario`);
+    res.redirect(`/homeVeterinario`);
   }
   if (newToken.rol == false) {
-    res.redirect(`/usuario`);
+    res.redirect(`/homeUsuario`);
   }
 });
 

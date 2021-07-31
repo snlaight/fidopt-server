@@ -53,9 +53,9 @@ router.post("/newAdoptionRequest/:idPerro", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
-  let idRequest = createdRequest._id;
+  
   await Usuario.findByIdAndUpdate(idUsuario, {
-    $push: { adoptionRequests: idRequest },
+    $push: { adoptionRequests: createdRequest._id },
   })
     .then((usuarioActualizado) => {})
     .catch((error) => {
@@ -64,7 +64,7 @@ router.post("/newAdoptionRequest/:idPerro", async (req, res) => {
   await Veterinario.findOneAndUpdate(
     { perros: idPerro },
     {
-      $push: { Requests: idRequest },
+      $push: { Requests: createdRequest._id },
     }
   )
     .then((veterinarioActualizado) => {})

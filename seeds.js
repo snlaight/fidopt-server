@@ -25,6 +25,7 @@ let veterinarios = [
     rol: true,
     ciudad: "Buenos Aires",
     password: "1222312",
+    Requests: [],
     email: "santiago@ponzi.com",
     veterinaria: "CanConnect",
     perros: ["60c5fbdc8c3b2720a2e13641", "60c5fbdc8c3b2720a2e13643"],
